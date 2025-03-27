@@ -8,4 +8,6 @@ import com.manutcontrol.entities.UsersEntity;
 @Repository
 public interface UserEntityRepository extends JpaRepository<UsersEntity, Integer> {
 
+	boolean existsByEmail(String email);
+
 }

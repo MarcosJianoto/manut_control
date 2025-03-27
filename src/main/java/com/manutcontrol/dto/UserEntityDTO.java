@@ -13,7 +13,6 @@ public class UserEntityDTO {
 	}
 
 	public UserEntityDTO(Integer id, String email, String password) {
-
 		this.id = id;
 		this.email = email;
 		this.password = password;

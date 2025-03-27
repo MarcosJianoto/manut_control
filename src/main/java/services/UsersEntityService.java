@@ -1,5 +1,7 @@
 package services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +19,49 @@ public class UsersEntityService {
 		this.userEntityRepository = userEntityRepository;
 	}
 
-	public void saveUserEntityF() {
+	public void createUser(UserEntityDTO userEntityDTO) {
 
-		UsersEntity usersEntity = new UsersEntity();
+		if (userEntityRepository.existsByEmail(userEntityDTO.getEmail())) {
+			throw new IllegalArgumentException("E-mail já está em uso!");
+		}
 
-		UserEntityDTO userEntityDTO = new UserEntityDTO();
-	
+		UsersEntity userEntity = new UsersEntity(userEntityDTO.getEmail(), userEntityDTO.getPassword());
+		userEntityRepository.save(userEntity);
+	}
 
+	public UsersEntity findUser(Integer id) {
+		return userEntityRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found "));
+	}
+
+	public void editUser(Integer id, UserEntityDTO userDTO) {
+		UsersEntity user = findUser(id);
+		user.setEmail(userDTO.getEmail());
+		user.setPassword(userDTO.getPassword());
+
+		userEntityRepository.save(user);
+
+	}
+
+	public UserEntityDTO getUser(Integer id) {
+		UsersEntity user = findUser(id);
+		return new UserEntityDTO(user.getId(), user.getEmail(), user.getPassword());
+	}
+
+	public List<UserEntityDTO> getAllUsers() {
+		return userEntityRepository.findAll().stream()
+				.map(user -> new UserEntityDTO(user.getId(), user.getEmail(), user.getPassword())).toList();
+	}
+
+	public void deleteUser(Integer id) {
+		try {
+			if (!userEntityRepository.existsById(id)) {
+				throw new IllegalArgumentException("User not found");
+			}
+			userEntityRepository.deleteById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IllegalArgumentException("Error deleting user" + e.getMessage());
+		}
 	}
 
 }
