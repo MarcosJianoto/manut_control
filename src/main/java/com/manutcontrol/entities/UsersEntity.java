@@ -1,18 +1,13 @@
 package com.manutcontrol.entities;
 
 import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-
 @Entity
 @Table(name = "users")
 public class UsersEntity {
@@ -22,18 +17,10 @@ public class UsersEntity {
 	@SequenceGenerator(name = "users_sequence", sequenceName = "users_sequence", allocationSize = 1)
 	private Integer id;
 
-	@Column(name = "email", nullable = false)
-	@NotNull(message = "O e-mail é obrigatório")
-	@Email(message = "O e-mail deve ser válido")
-	@NotBlank(message = "O e-mail não pode ser em branco")
-	@NotEmpty(message = "O e-mail não pode ser vazio")
+	@Column(name = "email")
 	private String email;
 
-	@Column(name = "password", nullable = false)
-	@NotNull(message = "A senha é obrigatória.")
-	@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).{8,}$", message = "A senha deve conter pelo menos 8 caracteres, uma letra, um número e um caractere especial.")
-	@NotBlank(message = "A senha não pode ser em branco")
-	@NotEmpty(message = "A senha não pode ser vazia")
+	@Column(name = "password")
 	private String password;
 
 	public UsersEntity() {

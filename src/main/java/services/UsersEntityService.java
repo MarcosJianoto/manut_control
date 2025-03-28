@@ -15,18 +15,12 @@ public class UsersEntityService {
 	@Autowired
 	private UserEntityRepository userEntityRepository;
 
-	public UsersEntityService(UserEntityRepository userEntityRepository) {
-		this.userEntityRepository = userEntityRepository;
-	}
-
-	public void createUser(UserEntityDTO userEntityDTO) {
-
-		if (userEntityRepository.existsByEmail(userEntityDTO.getEmail())) {
-			throw new IllegalArgumentException("E-mail já está em uso!");
+	public void createUser(UserEntityDTO userDTO) {
+		if (userEntityRepository.existsByEmail(userDTO.getEmail())) {
+			throw new IllegalArgumentException("Email already in use.");
 		}
-
-		UsersEntity userEntity = new UsersEntity(userEntityDTO.getEmail(), userEntityDTO.getPassword());
-		userEntityRepository.save(userEntity);
+		UsersEntity user = new UsersEntity(userDTO.getEmail(), userDTO.getPassword());
+		userEntityRepository.save(user);
 	}
 
 	public UsersEntity findUser(Integer id) {
